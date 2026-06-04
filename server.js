@@ -2,7 +2,15 @@ import express from "express";
 import cors from "cors";
 import axios from "axios";
 import * as cheerio from "cheerio";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.get("/", (req, res) => {
+    return res.sendFile(path.join(__dirname, "index.html"));
+});
 const app = express();
 
 const PORT = process.env.PORT || 4000;
@@ -292,15 +300,7 @@ function fallbackFromWatchPage(html, slug, extracted) {
     };
 }
 
-app.get("/", (req, res) => {
-    return sendOk(res, {
-        name: "SupaPlay Anikoto Series API",
-        endpoints: {
-            bySlug: "/api/series/:slug",
-            example: "/api/series/dr-stone-stone-wars-yvphy"
-        }
-    });
-});
+
 
 app.get("/api/series/:slug", async (req, res) => {
     const slug = safeSlug(req.params.slug);
