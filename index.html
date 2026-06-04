@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupaPlay Series API Documentation</title>
+    <meta name="description" content="SupaPlay Anikoto Series API documentation and live tester.">
+
+    <style>
+        :root {
+            --bg: #07090f;
+            --card: #101522;
+            --card-2: #151b2b;
+            --text: #ffffff;
+            --muted: #a7b0c5;
+            --blue: #1e90ff;
+            --blue-2: #6bbcff;
+            --green: #00c896;
+            --red: #ff5f6d;
+            --yellow: #ffd166;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 20px 70px rgba(0, 0, 0, 0.45);
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at top left, rgba(30, 144, 255, 0.16), transparent 32%),
+                radial-gradient(circle at top right, rgba(0, 200, 150, 0.12), transparent 28%),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--blue-2);
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .hero {
+            padding: 70px 0 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--blue-2);
+            border: 1px solid rgba(30, 144, 255, 0.25);
+            background: rgba(30, 144, 255, 0.08);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        h1 {
+            font-size: clamp(36px, 6vw, 68px);
+            line-height: 1.02;
+            margin: 18px 0 16px;
+            letter-spacing: -2px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--blue), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            color: var(--muted);
+            max-width: 780px;
+            font-size: 18px;
+            margin-bottom: 28px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 12px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: 800;
+            color: white;
+            background: var(--blue);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(30, 144, 255, 0.28);
+            background: #3aa0ff;
+        }
+
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.13);
+            box-shadow: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            padding-bottom: 60px;
+        }
+
+        @media (min-width: 900px) {
+            .grid.two {
+                grid-template-columns: 0.9fr 1.1fr;
+            }
+
+            .grid.three {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)), var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        .card h2,
+        .card h3 {
+            margin-top: 0;
+            line-height: 1.2;
+        }
+
+        .card h2 {
+            font-size: 24px;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .flow {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .flow-step {
+            background: var(--card-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+        }
+
+        .flow-step strong {
+            color: var(--blue-2);
+        }
+
+        code,
+        pre {
+            font-family: Consolas, Monaco, "Courier New", monospace;
+        }
+
+        code {
+            color: var(--blue-2);
+            background: rgba(30, 144, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        pre {
+            margin: 0;
+            background: #080b12;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--blue);
+            border-radius: 14px;
+            padding: 16px;
+            color: #dce7ff;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--blue-2);
+            background: rgba(30, 144, 255, 0.08);
+            font-size: 13px;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        @media (min-width: 720px) {
+            .form-grid {
+                grid-template-columns: 1.2fr 1fr auto;
+                align-items: end;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        input,
+        select {
+            width: 100%;
+            background: #080b12;
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 12px;
+            padding: 13px 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(30, 144, 255, 0.12);
+        }
+
+        .status {
+            display: none;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-top: 18px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.ok {
+            border-color: rgba(0, 200, 150, 0.3);
+            background: rgba(0, 200, 150, 0.08);
+        }
+
+        .status.warn {
+            border-color: rgba(255, 209, 102, 0.3);
+            background: rgba(255, 209, 102, 0.08);
+        }
+
+        .status.error {
+            border-color: rgba(255, 95, 109, 0.3);
+            background: rgba(255, 95, 109, 0.08);
+        }
+
+        .results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .anime-box {
+            display: grid;
+            gap: 16px;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 720px) {
+            .anime-box {
+                grid-template-columns: 110px 1fr;
+            }
+        }
+
+        .poster {
+            width: 110px;
+            aspect-ratio: 2 / 3;
+            object-fit: cover;
+            background: #000;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .chip {
+            font-size: 12px;
+            color: white;
+            border-radius: 999px;
+            padding: 5px 9px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid var(--border);
+        }
+
+        .chip.green {
+            background: rgba(0, 200, 150, 0.12);
+            border-color: rgba(0, 200, 150, 0.26);
+            color: #8fffe4;
+        }
+
+        .chip.blue {
+            background: rgba(30, 144, 255, 0.12);
+            border-color: rgba(30, 144, 255, 0.26);
+            color: #add8ff;
+        }
+
+        .episode-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .episode {
+            background: var(--card-2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+        }
+
+        .episode-head {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            align-items: start;
+            flex-wrap: wrap;
+        }
+
+        .episode-title {
+            font-weight: 900;
+        }
+
+        .episode-meta {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .episode-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .mini-btn {
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border-radius: 10px;
+            padding: 9px 11px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .mini-btn.primary {
+            background: var(--blue);
+            border-color: var(--blue);
+        }
+
+        .preview {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .preview.show {
+            display: block;
+        }
+
+        .iframe-wrap {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .iframe-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            background: #000;
+        }
+
+        .footer {
+            padding: 30px 0 60px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .small {
+            font-size: 13px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="container">
+            <span class="badge">SupaPlay API Docs + Live Tester</span>
+
+            <h1>
+                Build episode lists from an
+                <span class="gradient-text">Anikoto slug</span>
+            </h1>
+
+            <p class="lead">
+                This page documents your SupaPlay Series API. It shows how the endpoint works,
+                how the JSON response is structured, and lets you test any slug directly from the browser.
+            </p>
+
+            <div class="hero-actions">
+                <a class="btn" href="#tester">Test API</a>
+                <a class="btn secondary" href="#docs">Read Docs</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="grid three" id="docs">
+            <div class="card">
+                <h3>Endpoint</h3>
+                <p class="muted">Fetch series data and episodes using only the anime slug.</p>
+                <pre>GET /api/series/:slug</pre>
+            </div>
+
+            <div class="card">
+                <h3>Example</h3>
+                <p class="muted">Example request for Dr. Stone: Stone Wars.</p>
+                <pre>/api/series/dr-stone-stone-wars-yvphy</pre>
+            </div>
+
+            <div class="card">
+                <h3>Player URLs</h3>
+                <p class="muted">MegaPlay links are rewritten to SupaPlay links.</p>
+                <pre>https://supaplay.fun/stream/s-2/{embed_id}/sub</pre>
+            </div>
+        </section>
+
+        <section class="grid two">
+            <div class="card">
+                <h2>How the API works</h2>
+                <p class="muted">
+                    The API first uses the fast method. If that fails, it automatically switches to the slower fallback.
+                </p>
+
+                <div class="flow">
+                    <div class="flow-step">
+                        <strong>1.</strong> Fetch Anikoto watch page:
+                        <br>
+                        <code>/watch/{slug}/ep-1</code>
+                    </div>
+
+                    <div class="flow-step">
+                        <strong>2.</strong> Extract the internal series ID:
+                        <br>
+                        <code>#watch-main[data-id]</code>
+                    </div>
+
+                    <div class="flow-step">
+                        <strong>3.</strong> Try fast source:
+                        <br>
+                        <code>https://anikotoapi.site/series/{series_id}</code>
+                    </div>
+
+                    <div class="flow-step">
+                        <strong>4.</strong> If fast source fails, use slow fallback:
+                        <br>
+                        <code>Anikoto AJAX / server resolving method</code>
+                    </div>
+
+                    <div class="flow-step">
+                        <strong>5.</strong> Return clean JSON with:
+                        <br>
+                        <code>anime</code>, <code>episodes</code>, <code>watch</code>, and <code>embed_url</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Response shape</h2>
+                <pre>{
+  "success": true,
+  "data": {
+    "slug": "dr-stone-stone-wars-yvphy",
+    "series_id": 5781,
+    "watch_url": "https://anikototv.to/watch/dr-stone-stone-wars-yvphy/ep-1",
+    "source": "anikotoapi.site",
+    "anime": {},
+    "episodes": []
+  }
+}</pre>
+            </div>
+        </section>
+
+        <section class="card" style="margin-bottom: 18px;">
+            <h2>Important response fields</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td><code>source</code></td>
+                        <td>Shows whether the API used <code>anikotoapi.site</code> or <code>slow-anikoto-fallback</code>.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>series_id</code></td>
+                        <td>The internal Anikoto ID extracted from the watch page.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>anime</code></td>
+                        <td>Anime metadata such as title, slug, poster, status, year, and total episodes.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>episodes</code></td>
+                        <td>Array of episode objects.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>episode_embed_id</code></td>
+                        <td>The ID used to build SupaPlay player iframe URLs.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>embed_url.sub</code></td>
+                        <td>Subbed SupaPlay iframe URL.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>embed_url.dub</code></td>
+                        <td>Dubbed SupaPlay iframe URL.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>watch</code></td>
+                        <td>Your public Animapo watch-page URL for that episode.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card" id="tester">
+            <h2>Live API Tester</h2>
+
+            <p class="muted">
+                Enter your API base URL and a slug. The page will call
+                <code>{API_BASE}/api/series/{slug}</code>, render episodes, show the raw JSON,
+                and let you preview/copy iframe embeds.
+            </p>
+
+            <form id="test-form" class="form-grid">
+                <div>
+                    <label for="api-base">API Base URL</label>
+                    <input id="api-base" type="url" value="https://api.supaplay.fun" placeholder="https://api.supaplay.fun" required>
+                </div>
+
+                <div>
+                    <label for="slug">Anime slug</label>
+                    <input id="slug" type="text" value="dr-stone-stone-wars-yvphy" placeholder="sakamoto-days-sfdxz" required>
+                </div>
+
+                <div>
+                    <button class="btn" type="submit">Test API</button>
+                </div>
+            </form>
+
+            <div id="status" class="status"></div>
+
+            <div id="results" class="results">
+                <div class="anime-box">
+                    <img id="anime-poster" class="poster" alt="Anime poster">
+
+                    <div>
+                        <h2 id="anime-title" style="margin-bottom: 6px;">Anime title</h2>
+                        <div class="muted" id="anime-details"></div>
+
+                        <div class="chips">
+                            <span class="chip blue" id="source-chip">source</span>
+                            <span class="chip green" id="count-chip">0 episodes</span>
+                            <span class="chip" id="series-chip">series id</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Episodes</h3>
+                <div id="episode-list" class="episode-list"></div>
+
+                <div id="preview" class="preview">
+                    <h3>Player preview</h3>
+
+                    <div class="iframe-wrap">
+                        <iframe
+                            id="preview-frame"
+                            src=""
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <h3>Selected iframe code</h3>
+                    <pre id="iframe-code"></pre>
+
+                    <button class="btn secondary" id="copy-iframe" type="button">Copy iframe code</button>
+                </div>
+
+                <h3 style="margin-top: 28px;">Raw JSON</h3>
+                <pre id="raw-json"></pre>
+            </div>
+        </section>
+
+        <section class="grid two" style="margin-top: 18px;">
+            <div class="card">
+                <h2>Episode object example</h2>
+                <pre>{
+  "id": 89988,
+  "title": "Stone Wars Beginning",
+  "jp_title": "Stone Wars Beginning",
+  "number": 1,
+  "watch": "https://animapo.fun/watch/dr-stone-stone-wars-yvphy?ep=1",
+  "episode_embed_id": "51322",
+  "embed_url": {
+    "sub": "https://supaplay.fun/stream/s-2/51322/sub",
+    "dub": "https://supaplay.fun/stream/s-2/51322/dub"
+  },
+  "updated_at": "2024-10-18 08:15:12"
+}</pre>
+            </div>
+
+            <div class="card">
+                <h2>Embed example</h2>
+                <pre>&lt;iframe
+  src="https://supaplay.fun/stream/s-2/51322/sub"
+  width="100%"
+  height="500"
+  frameborder="0"
+  scrolling="no"
+  allow="autoplay; fullscreen; picture-in-picture"
+  allowfullscreen&gt;
+&lt;/iframe&gt;</pre>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container small">
+            SupaPlay Series API documentation page. Configure the API base URL before testing on production.
+        </div>
+    </footer>
+
+    <script>
+        const form = document.getElementById("test-form");
+        const apiBaseInput = document.getElementById("api-base");
+        const slugInput = document.getElementById("slug");
+
+        const statusBox = document.getElementById("status");
+        const results = document.getElementById("results");
+
+        const animePoster = document.getElementById("anime-poster");
+        const animeTitle = document.getElementById("anime-title");
+        const animeDetails = document.getElementById("anime-details");
+        const sourceChip = document.getElementById("source-chip");
+        const countChip = document.getElementById("count-chip");
+        const seriesChip = document.getElementById("series-chip");
+
+        const episodeList = document.getElementById("episode-list");
+        const rawJson = document.getElementById("raw-json");
+
+        const preview = document.getElementById("preview");
+        const previewFrame = document.getElementById("preview-frame");
+        const iframeCode = document.getElementById("iframe-code");
+        const copyIframeBtn = document.getElementById("copy-iframe");
+
+        let selectedIframeCode = "";
+
+        function setStatus(type, message) {
+            statusBox.className = "status show " + type;
+            statusBox.textContent = message;
+        }
+
+        function clearStatus() {
+            statusBox.className = "status";
+            statusBox.textContent = "";
+        }
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function normalizeBaseUrl(value) {
+            return String(value || "").trim().replace(/\/+$/, "");
+        }
+
+        function buildIframeCode(url) {
+            return `<iframe src="${url}" width="100%" height="500" frameborder="0" scrolling="no" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+        }
+
+        function showPreview(url) {
+            if (!url) {
+                setStatus("error", "This episode does not have an embed URL.");
+                return;
+            }
+
+            selectedIframeCode = buildIframeCode(url);
+
+            previewFrame.src = url;
+            iframeCode.textContent = selectedIframeCode;
+            preview.classList.add("show");
+
+            preview.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        async function copyText(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                setStatus("ok", "Copied to clipboard.");
+            } catch {
+                const textarea = document.createElement("textarea");
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand("copy");
+                textarea.remove();
+                setStatus("ok", "Copied to clipboard.");
+            }
+        }
+
+        function renderEpisodes(episodes) {
+            episodeList.innerHTML = "";
+
+            if (!Array.isArray(episodes) || episodes.length === 0) {
+                episodeList.innerHTML = '<div class="muted">No episodes found.</div>';
+                return;
+            }
+
+            for (const episode of episodes) {
+                const subUrl = episode?.embed_url?.sub || "";
+                const dubUrl = episode?.embed_url?.dub || "";
+
+                const item = document.createElement("div");
+                item.className = "episode";
+
+                item.innerHTML = `
+                    <div class="episode-head">
+                        <div>
+                            <div class="episode-title">
+                                Episode ${escapeHtml(episode.number)}: ${escapeHtml(episode.title || "Untitled")}
+                            </div>
+
+                            <div class="episode-meta">
+                                Embed ID: ${escapeHtml(episode.episode_embed_id || "none")}
+                                ${episode.updated_at ? " • Updated: " + escapeHtml(episode.updated_at) : ""}
+                            </div>
+                        </div>
+
+                        <div class="episode-meta">
+                            ID: ${escapeHtml(episode.id || "null")}
+                        </div>
+                    </div>
+
+                    <div class="episode-actions">
+                        <button class="mini-btn primary" type="button" data-preview="${escapeHtml(subUrl)}">Preview SUB</button>
+                        <button class="mini-btn" type="button" data-preview="${escapeHtml(dubUrl)}">Preview DUB</button>
+                        <button class="mini-btn" type="button" data-copy="${escapeHtml(buildIframeCode(subUrl))}">Copy SUB iframe</button>
+                        <button class="mini-btn" type="button" data-copy="${escapeHtml(buildIframeCode(dubUrl))}">Copy DUB iframe</button>
+                        ${episode.watch ? `<a class="mini-btn" href="${escapeHtml(episode.watch)}" target="_blank" rel="noopener">Open watch</a>` : ""}
+                    </div>
+                `;
+
+                episodeList.appendChild(item);
+            }
+
+            episodeList.querySelectorAll("[data-preview]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    showPreview(button.getAttribute("data-preview"));
+                });
+            });
+
+            episodeList.querySelectorAll("[data-copy]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    copyText(button.getAttribute("data-copy"));
+                });
+            });
+        }
+
+        function renderData(json) {
+            const data = json.data || {};
+            const anime = data.anime || {};
+            const episodes = Array.isArray(data.episodes) ? data.episodes : [];
+
+            animePoster.src = anime.poster || "";
+            animePoster.classList.toggle("hidden", !anime.poster);
+
+            animeTitle.textContent = anime.title || data.slug || "Unknown anime";
+
+            animeDetails.textContent = [
+                anime.status ? `Status: ${anime.status}` : "",
+                anime.year ? `Year: ${anime.year}` : "",
+                anime.episodes ? `Episodes: ${anime.episodes}` : "",
+                anime.duration ? `Duration: ${anime.duration}` : ""
+            ].filter(Boolean).join(" • ");
+
+            sourceChip.textContent = data.source || "unknown source";
+            countChip.textContent = `${episodes.length} episode${episodes.length === 1 ? "" : "s"}`;
+            seriesChip.textContent = `series_id: ${data.series_id || anime.id || "unknown"}`;
+
+            renderEpisodes(episodes);
+
+            rawJson.textContent = JSON.stringify(json, null, 2);
+            results.classList.add("show");
+
+            if (data.warning) {
+                setStatus("warn", `${data.warning}${data.api_error ? " — " + data.api_error : ""}`);
+            } else if (data.cached) {
+                setStatus("ok", "Loaded successfully from cache.");
+            } else {
+                setStatus("ok", `Loaded successfully using ${data.source || "API"}.`);
+            }
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const apiBase = normalizeBaseUrl(apiBaseInput.value);
+            const slug = slugInput.value.trim();
+
+            if (!apiBase || !slug) {
+                setStatus("error", "Please enter both API base URL and slug.");
+                return;
+            }
+
+            const url = `${apiBase}/api/series/${encodeURIComponent(slug)}`;
+
+            results.classList.remove("show");
+            preview.classList.remove("show");
+            previewFrame.src = "";
+            rawJson.textContent = "";
+
+            setStatus("warn", `Loading ${url} ...`);
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+
+                const json = await response.json();
+
+                if (!response.ok || !json.success) {
+                    throw new Error(json.message || `Request failed with HTTP ${response.status}`);
+                }
+
+                renderData(json);
+            } catch (error) {
+                setStatus("error", error.message || "Failed to load API data.");
+            }
+        });
+
+        copyIframeBtn.addEventListener("click", function () {
+            if (!selectedIframeCode) {
+                setStatus("error", "No iframe selected yet.");
+                return;
+            }
+
+            copyText(selectedIframeCode);
+        });
+    </script>
+</body>
+</html>
