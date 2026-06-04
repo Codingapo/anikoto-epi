@@ -8,9 +8,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.get("/", (req, res) => {
-    return res.sendFile(path.join(__dirname, "index.html"));
-});
+
 const app = express();
 
 const PORT = process.env.PORT || 4000;
@@ -25,7 +23,9 @@ app.set("trust proxy", true);
 
 app.use(cors());
 app.use(express.json());
-
+app.get("/", (req, res) => {
+    return res.sendFile(path.join(__dirname, "index.html"));
+});
 const http = axios.create({
     timeout: 15000,
     headers: {
