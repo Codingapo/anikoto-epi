@@ -1,4 +1,4 @@
-# SupaPlay Anikoto Series API
+#  Anikoto  fetching Episodes
 
 A fast Node.js API that fetches anime episode data by Anikoto slug.
 
