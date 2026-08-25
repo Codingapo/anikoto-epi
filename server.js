@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const ANIKOTO_BASE = process.env.ANIKOTO_BASE || "https://anikototv.to";
-const ANIKOTO_API_BASE = process.env.ANIKOTO_API_BASE || "https://anikotoapib.site";
+const ANIKOTO_API_BASE = process.env.ANIKOTO_API_BASE || "https://anikotoapi.site";
 
 const EMBED_BASE = process.env.EMBED_BASE || "https://supaplay.fun";
 const WATCH_BASE = process.env.WATCH_BASE || "https://animapotv.fun";
