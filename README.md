@@ -5,13 +5,7 @@ A fast Node.js API that fetches anime episode data by Anikoto slug.
 The API works in two modes:
 
 1. **Fast mode**  
-   Fetches the Anikoto watch page, extracts the internal Anikoto series ID, then calls `anikotoapi.site`.
-
-2. **Slow fallback mode**  
-   If `anikotoapi.site` is offline or returns invalid data, the API falls back to the slower Anikoto scraping/AJAX method.
-
-The final response always rewrites MegaPlay embed links to your own SupaPlay domain.
-
+   Fetches the Anikoto watch page, extracts the internal Anikoto series ID
 ---
 
 ## Example
@@ -561,13 +555,7 @@ server {
 ---
 
 ## Notes
-
-- The fast method depends on `anikotoapi.site`.
-- If that service goes down, the fallback method keeps the API working.
-- The fallback method is slower because it must discover episodes and resolve server/embed data manually.
-- Cache is important for performance.
-- This API does not decrypt video streams or download media.
-- It only returns episode metadata and SupaPlay wrapper embed URLs.
+--see it in action at animapotv.fun
 
 ---
 
